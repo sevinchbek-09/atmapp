@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -70,8 +71,9 @@ class _AllMindsPageState extends State<AllMindsPage> {
               SizedBox(
                 height: 50,
               ),
-              ElevatedButton(onPressed: () {
-                String token= await FirebaseMes
+              ElevatedButton(onPressed: ()async {
+                String? token= await FirebaseMessaging.instance.getToken();
+                print(token);
 
               }, child: Text('Get Token'))
             ],
