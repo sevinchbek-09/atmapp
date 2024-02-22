@@ -70,7 +70,10 @@ class _AllMindsPageState extends State<AllMindsPage> {
               SizedBox(
                 height: 50,
               ),
-              ElevatedButton(onPressed: () {}, child: Text('Get Token'))
+              ElevatedButton(onPressed: () {
+                String token= await FirebaseMes
+
+              }, child: Text('Get Token'))
             ],
           ),
         ))
