@@ -12,7 +12,14 @@ class AllMindsPage extends StatefulWidget {
 
 class _AllMindsPageState extends State<AllMindsPage> {
   final box = GetStorage();
+  String tk='';
   int a = 0;
+  @override
+  void setState(VoidCallback fn) {
+    // TODO: implement setState
+    tk;
+    super.setState(fn);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,13 +74,16 @@ class _AllMindsPageState extends State<AllMindsPage> {
             child: Container(
           child: Column(
             children: [
-              Text('HHHHHHHHHHHHH'),
+              Text('Token${tk}'),
               SizedBox(
                 height: 50,
               ),
               ElevatedButton(onPressed: ()async {
+
                 String? token= await FirebaseMessaging.instance.getToken();
                 print(token);
+                tk=token!;
+                setState(() {tk;});
 
               }, child: Text('Get Token'))
             ],
