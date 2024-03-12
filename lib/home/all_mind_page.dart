@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 
+import '../authorization/getToken/get_token.dart';
 import '../model/model.dart';
 
 class AllMindsPage extends StatefulWidget {
@@ -46,14 +47,11 @@ class _AllMindsPageState extends State<AllMindsPage> {
                 // Navigator.of(context).push(MaterialPageRoute(
                 //   builder: (context) => HomePage(id:a),
                 // ));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => GetToken()));
               },
               icon: Icon(Icons.add)),
-          IconButton(
-              onPressed: () {
-                // Navigator.of(context).push(MaterialPageRoute(
-                //     builder: (context) => BuyPage()));
-              },
-              icon: Icon(Icons.shopping_cart))
+
         ],
       ),
       body: RefreshIndicator(
@@ -70,7 +68,6 @@ class _AllMindsPageState extends State<AllMindsPage> {
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
                       // print(snapshot.data![index].id);
-
                       // kinoId.add(snapshot.data![index].id);
 
                       return Card(
