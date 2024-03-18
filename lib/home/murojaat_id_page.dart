@@ -185,7 +185,41 @@ class _State extends State<MurojaatPage> {
                       ),
                       side: BorderSide(width: 2, color: Colors.black45),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+
+                      // Future pushNotificationsSpecificDevice({
+                      //   required String matn,
+                      //   required String binoo,
+                      // }) async {
+                      //   var headers = {
+                      //     'Content-Type': 'application/json',
+                      //     'Authorization':
+                      //     'key=AAAADgN57kM:APA91bGA_626Yc_KUlSwNwP1NHOodpEeXy4UxZSQBOyigN34GFP-0Skh6NjOTtqeINiDPo0cho-7oyBPLnjFf6WytpWibgNQnQxWd-wckzX1AwqMucSD0rRPlQy4VF8rYsbENd7G5gYZ'
+                      //   };
+                      //   var request =
+                      //   http.Request('POST', Uri.parse('https://fcm.googleapis.com/fcm/send'));
+                      //   request.body = json.encode({
+                      //     "to":
+                      //     "eLMK_nCoRYeCsFPhpuI7sg:APA91bEAn2gFKdn1V_X_HoX5eBtLGfQJVeH9RKcGMgX58TxIBx_vNOVUHqNZcUjEWBT_m9GhaF2OwjL4YNL0XylzgCddXYPhDnGY84MJYMp4ST0JOLqwXLK1egsGKQrdfe4UDXGwaOZM",
+                      //     "notification": {
+                      //       "title": "$matn",
+                      //       "body": "$selectedValue ${bino.text} ${xona.text}xona ${matin.text}"
+                      //     }
+                      //   });
+                      //   request.headers.addAll(headers);
+                      //
+                      //   http.StreamedResponse response = await request.send();
+                      //
+                      //   if (response.statusCode == 200) {
+                      //     print(await response.stream.bytesToString());
+                      //   } else {
+                      //     print(response.reasonPhrase);
+                      //   }
+                      // }
+
+
+
+                    },
                     child: Text('Topshiriqni biriktirish'),
                   ),
                 )
