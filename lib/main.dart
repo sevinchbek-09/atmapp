@@ -16,16 +16,14 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
-  final box = GetStorage();
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        color: Colors.blueAccent,
-        home: AllMindsPage()
-        // box.read('UID')==null?SingInPage():const AllMindsPage(),
-        );
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      color: Colors.blueAccent,
+      home: AllMindsPage(),
+    );
   }
 }

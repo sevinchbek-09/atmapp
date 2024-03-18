@@ -1,6 +1,7 @@
 import 'package:atmapp/home/murojaat_id_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get_storage/get_storage.dart';
 
 import '../authorization/getToken/get_token.dart';
@@ -39,6 +40,7 @@ class _AllMindsPageState extends State<AllMindsPage> {
     }
 
     return Scaffold(
+      drawer: drawer(),
       appBar: AppBar(
         title: Text('Barcha murojaatlar'),
         actions: [
@@ -47,11 +49,10 @@ class _AllMindsPageState extends State<AllMindsPage> {
                 // Navigator.of(context).push(MaterialPageRoute(
                 //   builder: (context) => HomePage(id:a),
                 // ));
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => GetToken()));
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => GetToken()));
               },
               icon: Icon(Icons.add)),
-
         ],
       ),
       body: RefreshIndicator(
@@ -71,22 +72,30 @@ class _AllMindsPageState extends State<AllMindsPage> {
                       // kinoId.add(snapshot.data![index].id);
 
                       return Card(
-                        child: ListTile(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => MurojaatPage(
-                                  matn: snapshot.data![index].matn,
-                                  bino: snapshot.data![index].bino,
-                                  bulim: snapshot.data![index].bulim,
-                                  xona: snapshot.data![index].xona,
-                                  status: snapshot.data![index].status,
-                                  tel: snapshot.data![index].tel),
-                            ));
-                          },
-                          subtitle: Text("bino ${snapshot.data![index].xona}"),
-                          title: Text(
-                            snapshot.data![index].matn,
-                            style: TextStyle(fontSize: 22),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: snapshot.data![index].status == true
+                                  ? Colors.green[300]
+                                  : Colors.red[300],
+                              borderRadius: BorderRadius.circular(14.0)),
+                          child: ListTile(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => MurojaatPage(
+                                    matn: snapshot.data![index].matn,
+                                    bino: snapshot.data![index].bino,
+                                    bulim: snapshot.data![index].bulim,
+                                    xona: snapshot.data![index].xona,
+                                    status: snapshot.data![index].status,
+                                    tel: snapshot.data![index].tel),
+                              ));
+                            },
+                            subtitle:
+                                Text("bino ${snapshot.data![index].bino}"),
+                            title: Text(
+                              snapshot.data![index].matn,
+                              style: TextStyle(fontSize: 22),
+                            ),
                           ),
                         ),
                       );
@@ -100,4 +109,32 @@ class _AllMindsPageState extends State<AllMindsPage> {
       ),
     );
   }
+}
+
+Widget drawer() {
+  return Drawer(
+      child: ListView(
+    padding: EdgeInsets.zero,
+    children: [
+      UserAccountsDrawerHeader(
+        accountName: Text('Muhlis'),
+        accountEmail: Text('RTTM boshlig`i'),
+        decoration: BoxDecoration(
+          color: Colors.blue.shade800,
+            image: DecorationImage(
+          image: AssetImage('assets/images/a.png',),
+        )),
+      ),
+      SizedBox(height: 10,),
+      ListTile(onTap: (){},
+        leading: Icon(Icons.people_alt),
+        title: Text('Xodimlar'),
+      ),
+      SizedBox(height: 10,),
+      ListTile(onTap: (){},
+        leading: Icon(Icons.add),
+        title: Text('Post token'),
+      )
+    ],
+  ));
 }
