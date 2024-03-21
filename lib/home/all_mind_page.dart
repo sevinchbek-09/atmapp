@@ -80,6 +80,8 @@ class _AllMindsPageState extends State<AllMindsPage> {
                               borderRadius: BorderRadius.circular(14.0)),
                           child: ListTile(
                             onTap: () {
+                              
+                              print("INDEKS");
                               Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => MurojaatPage(
                                     matn: snapshot.data![index].matn,

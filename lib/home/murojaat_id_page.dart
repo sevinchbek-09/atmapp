@@ -1,7 +1,12 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:atmapp/model/xodilmar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+
+import '../model/model.dart';
 
 class MurojaatPage extends StatefulWidget {
   String matn;
@@ -25,6 +30,34 @@ class MurojaatPage extends StatefulWidget {
 class _State extends State<MurojaatPage> {
   String selectedValue = 'Texnik bo`lim';
   final bulimlar = ['Kiber xavfsizlik', 'Texnik bo`lim', 'ATM'];
+  Future pushNotificationsSpecificDevice(
+
+  ) async {
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+      'key=AAAADgN57kM:APA91bGA_626Yc_KUlSwNwP1NHOodpEeXy4UxZSQBOyigN34GFP-0Skh6NjOTtqeINiDPo0cho-7oyBPLnjFf6WytpWibgNQnQxWd-wckzX1AwqMucSD0rRPlQy4VF8rYsbENd7G5gYZ'
+    };
+    var request =
+    http.Request('POST', Uri.parse('https://fcm.googleapis.com/fcm/send'));
+    request.body = json.encode({
+      "to":
+      "$token1",
+      "notification": {
+        "title": widget.matn,
+        "body": "${widget.matn} ${widget.bino}bino ${widget.xona} xona"
+      }
+    });
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+    } else {
+      print(response.reasonPhrase);
+    }
+  }
   Future<List<Xodimlar>> getXodimlar() async {
     final db = FirebaseFirestore.instance;
     var x = await db.collection('user').get().then(
@@ -34,24 +67,21 @@ class _State extends State<MurojaatPage> {
     return x;
   }
 
-  String? token;
+  String? ism;
   String? token1;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          print(token);
+          print(ism);
           print(token1);
         },
       ),
       appBar: AppBar(
         title: Text('Murojaat haqida'),
       ),
-      body:
-
-
-      Expanded(
+      body: Expanded(
         child: Container(
           padding: EdgeInsets.all(5),
           child: Column(
@@ -59,121 +89,113 @@ class _State extends State<MurojaatPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
+                  flex: 1,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Murojaat matni: ${widget.matn}',
-                        style: TextStyle(fontSize: 20),
+                      Expanded(flex: 1,
+                        child: Column(
+                          children: [
+                            Text(
+                              'Murojaat matni: ${widget.matn}',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            SizedBox(
+                              height: 7,
+                            ),
+                            Text(
+                              'Bo`lim: ${widget.bulim}',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            SizedBox(
+                              height: 7,
+                            ),
+                            Text(
+                              'Bino: ${widget.bino}',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            SizedBox(
+                              height: 7,
+                            ),
+                            Text(
+                              'Xona: ${widget.xona}',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            Text(
+                              'Status: ${widget.status}',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  'Telefon raqam',
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                                TextButton(
+                                    child: Text(
+                                      widget.tel,
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                    onPressed: () {}),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 7,
+                            ),
+                          ],
+                        ),
                       ),
-                      SizedBox(
-                        height: 7,
-                      ),
-                      Text(
-                        'Bo`lim: ${widget.bulim}',
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      SizedBox(
-                        height: 7,
-                      ),
-                      Text(
-                        'Bino: ${widget.bino}',
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      SizedBox(
-                        height: 7,
-                      ),
-                      Text(
-                        'Xona: ${widget.xona}',
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      Text(
-                        'Status: ${widget.status}',
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            'Telefon raqam',
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          TextButton(
-                              child: Text(
-                                widget.tel,
-                                style: TextStyle(fontSize: 20),
-                              ),
-                              onPressed: () {}),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 7,
-                      ),
-                          
-                      Expanded(child: FutureBuilder<List<Xodimlar>>(
-                          future: getXodimlar(),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState == ConnectionState.waiting) {
-                              return Center(child: CircularProgressIndicator());
-                            }
-                            if (snapshot.hasData) {
-                              return ListView.builder(
-                                  itemCount: 1,
-                                  itemBuilder: (context, index) {
-                                    return DropdownButtonFormField(
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(),
-                                      ),
-                                      onTap: () {},
-                                      items: snapshot.data!
-                                          .map((snapshot) => DropdownMenuItem<String>(
-                                        onTap: (){
-                                          token1=snapshot.token;
+                  
+                      Expanded(
+                        flex: 2,
+                        child: FutureBuilder<List<Xodimlar>>(
+                            future: getXodimlar(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Center(
+                                    child: CircularProgressIndicator());
+                              }
+                              if (snapshot.hasData) {
+                                return ListView.builder(
+                                    itemCount: 1,
+                                    itemBuilder: (context, index) {
+                                      return DropdownButtonFormField(
+                                        decoration: InputDecoration(
+                                          border: OutlineInputBorder(),
+                                        ),
+                                        onTap: () {},
+                                        items: snapshot.data!
+                                            .map((snapshot) =>
+                                                DropdownMenuItem<String>(
+                                                  onTap: () {
+                                                    token1 = snapshot.token;
+                                                  },
+                                                  child: Text(snapshot.ismi),
+                                                  value: snapshot.ismi,
+                                                ))
+                                            .toList(),
+                                        onChanged: (String? newValue) {
+                                          // setState(() {
+                                          //   newValue= snapshot.data![index].ismi;
+                                          //   token=newValue;
+                                          // });
+                                          //   newValue= snapshot.data![index].ismi;
+                                          //   print(snapshot.data![index].toString());
+                                          ism = newValue;
                                         },
-                                        child: Text(snapshot.ismi),
-                                        value: snapshot.ismi,
-                                      ))
-                                          .toList(),
-                                      onChanged: (String? newValue) {
-                                        // setState(() {
-                                        //   newValue= snapshot.data![index].ismi;
-                                        //   token=newValue;
-                                        // });
-                                        //   newValue= snapshot.data![index].ismi;
-                                        //   print(snapshot.data![index].toString());
-                                        token = newValue;
-                                      },
-                                    );
-                                  });
-                          
-                            }
-                          
-                            return Container(
-                              child: Text('hello'),
-                            );
-                          }),)
-                          
-                      // DropdownButtonFormField(
-                      //   decoration: InputDecoration(
-                      //     border: OutlineInputBorder(),
-                      //   ),
-                      //   value: '1',
-                      //   items: const [
-                      //     DropdownMenuItem(
-                      //       child: Text('Kiber xavfsizlik'),
-                      //       value: '0',
-                      //     ),
-                      //     DropdownMenuItem(
-                      //         value: '1', child: Text('Texnik bo`lim')),
-                      //     DropdownMenuItem(value: '2', child: Text('ATM')),
-                      //   ],
-                      //   onChanged: (String? value) {
-                      //     var a = int.parse(value!);
-                      //     // print(a);
-                      //     print(bulimlar[a]);
-                      //     selectedValue = bulimlar[a];
-                      //   },
-                      // ),
+                                      );
+                                    });
+                              }
+                  
+                              return Container(
+                                child: Text('hello'),
+                              );
+                            }),
+                      )
+                  
+
                     ],
                   ),
                 ),
@@ -185,40 +207,24 @@ class _State extends State<MurojaatPage> {
                       ),
                       side: BorderSide(width: 2, color: Colors.black45),
                     ),
-                    onPressed: () {
-
-                      // Future pushNotificationsSpecificDevice({
-                      //   required String matn,
-                      //   required String binoo,
-                      // }) async {
-                      //   var headers = {
-                      //     'Content-Type': 'application/json',
-                      //     'Authorization':
-                      //     'key=AAAADgN57kM:APA91bGA_626Yc_KUlSwNwP1NHOodpEeXy4UxZSQBOyigN34GFP-0Skh6NjOTtqeINiDPo0cho-7oyBPLnjFf6WytpWibgNQnQxWd-wckzX1AwqMucSD0rRPlQy4VF8rYsbENd7G5gYZ'
-                      //   };
-                      //   var request =
-                      //   http.Request('POST', Uri.parse('https://fcm.googleapis.com/fcm/send'));
-                      //   request.body = json.encode({
-                      //     "to":
-                      //     "eLMK_nCoRYeCsFPhpuI7sg:APA91bEAn2gFKdn1V_X_HoX5eBtLGfQJVeH9RKcGMgX58TxIBx_vNOVUHqNZcUjEWBT_m9GhaF2OwjL4YNL0XylzgCddXYPhDnGY84MJYMp4ST0JOLqwXLK1egsGKQrdfe4UDXGwaOZM",
-                      //     "notification": {
-                      //       "title": "$matn",
-                      //       "body": "$selectedValue ${bino.text} ${xona.text}xona ${matin.text}"
-                      //     }
-                      //   });
-                      //   request.headers.addAll(headers);
-                      //
-                      //   http.StreamedResponse response = await request.send();
-                      //
-                      //   if (response.statusCode == 200) {
-                      //     print(await response.stream.bytesToString());
-                      //   } else {
-                      //     print(response.reasonPhrase);
-                      //   }
-                      // }
-
-
-
+                    onPressed: () async{
+                      if(token1!=null&&ism!=null){
+                      await pushNotificationsSpecificDevice();
+                      var x= DateTime.now();
+                      final db = FirebaseFirestore.instance;
+                      Murojaat murojaat = Murojaat(
+                          matn: widget.matn,
+                          bino: widget.bino,
+                          xona: widget.xona,
+                          bulim: widget.bulim,
+                          tel: widget.tel, status: true);
+                      await db.collection('topshiriq').doc('$ism').collection('topshiriq')
+                          .doc(x.toString())
+                          .set(murojaat.toJson());
+                      }
+                      else{
+                        showAlertDialog(context);
+                      }
                     },
                     child: Text('Topshiriqni biriktirish'),
                   ),
@@ -227,5 +233,34 @@ class _State extends State<MurojaatPage> {
         ),
       ),
     );
+
   }
+  showAlertDialog(BuildContext context) {
+
+    // set up the button
+    Widget okButton = TextButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("My title"),
+      content: Text("This is my message."),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
 }
