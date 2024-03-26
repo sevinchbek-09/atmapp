@@ -14,6 +14,7 @@ class Murojaat {
   String xona;
   String bulim;
   String tel;
+  String id;
   bool status;
 
   Murojaat({
@@ -22,6 +23,7 @@ class Murojaat {
     required this.xona,
     required this.bulim,
     required this.tel,
+    required this.id,
     required this.status,
   });
 
@@ -31,6 +33,7 @@ class Murojaat {
     xona: json["xona"],
     bulim: json["bulim"],
     tel: json["tel"],
+    id: json["id"],
     status: json["status"],
   );
 
@@ -40,6 +43,7 @@ class Murojaat {
     "xona": xona,
     "bulim": bulim,
     "tel": tel,
+    "id": id,
     "status": status,
   };
 }

@@ -6,6 +6,7 @@ import 'package:get_storage/get_storage.dart';
 
 import '../authorization/getToken/get_token.dart';
 import '../model/model.dart';
+import '../xodimlar/barcha_xodimlar.dart';
 
 class AllMindsPage extends StatefulWidget {
   const AllMindsPage({Key? key}) : super(key: key);
@@ -40,20 +41,9 @@ class _AllMindsPageState extends State<AllMindsPage> {
     }
 
     return Scaffold(
-      drawer: drawer(),
+      drawer: drawer(context),
       appBar: AppBar(
         title: Text('Barcha murojaatlar'),
-        actions: [
-          IconButton(
-              onPressed: () {
-                // Navigator.of(context).push(MaterialPageRoute(
-                //   builder: (context) => HomePage(id:a),
-                // ));
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => GetToken()));
-              },
-              icon: Icon(Icons.add)),
-        ],
       ),
       body: RefreshIndicator(
         onRefresh: refresh,
@@ -80,7 +70,6 @@ class _AllMindsPageState extends State<AllMindsPage> {
                               borderRadius: BorderRadius.circular(14.0)),
                           child: ListTile(
                             onTap: () {
-                              
                               print("INDEKS");
                               Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => MurojaatPage(
@@ -89,7 +78,8 @@ class _AllMindsPageState extends State<AllMindsPage> {
                                     bulim: snapshot.data![index].bulim,
                                     xona: snapshot.data![index].xona,
                                     status: snapshot.data![index].status,
-                                    tel: snapshot.data![index].tel),
+                                    tel: snapshot.data![index].tel,
+                                    id: snapshot.data![index].id),
                               ));
                             },
                             subtitle:
@@ -113,7 +103,7 @@ class _AllMindsPageState extends State<AllMindsPage> {
   }
 }
 
-Widget drawer() {
+Widget drawer(context) {
   return Drawer(
       child: ListView(
     padding: EdgeInsets.zero,
@@ -122,18 +112,36 @@ Widget drawer() {
         accountName: Text('Muhlis'),
         accountEmail: Text('RTTM boshlig`i'),
         decoration: BoxDecoration(
-          color: Colors.blue.shade800,
+            color: Colors.blue.shade800,
             image: DecorationImage(
-          image: AssetImage('assets/images/a.png',),
-        )),
+              image: AssetImage(
+                'assets/images/a.png',
+              ),
+            )),
       ),
-      SizedBox(height: 10,),
-      ListTile(onTap: (){},
+      SizedBox(
+        height: 10,
+      ),
+      ListTile(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const BarchaXodimlar()),
+          );
+        },
         leading: Icon(Icons.people_alt),
         title: Text('Xodimlar'),
       ),
-      SizedBox(height: 10,),
-      ListTile(onTap: (){},
+      SizedBox(
+        height: 10,
+      ),
+      ListTile(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const GetToken()),
+          );
+        },
         leading: Icon(Icons.add),
         title: Text('Post token'),
       )
