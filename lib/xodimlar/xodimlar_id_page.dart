@@ -33,9 +33,7 @@ class _XodimlarIdPageState extends State<XodimlarIdPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-      ),
+
       appBar: AppBar(
         title: Text(widget.ism),
       ),
@@ -48,7 +46,10 @@ class _XodimlarIdPageState extends State<XodimlarIdPage> {
                 height: 180,
                 width: MediaQuery.of(context).size.width * 0.98,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Text('Xodim', style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -56,10 +57,7 @@ class _XodimlarIdPageState extends State<XodimlarIdPage> {
                           widget.ism,
                           style: TextStyle(fontSize: 25),
                         ),
-                        Text(
-                          'Nol',
-                          style: TextStyle(fontSize: 25),
-                        ),
+
                       ],
                     ),
                   ],

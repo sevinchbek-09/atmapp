@@ -23,14 +23,14 @@ class _AllMindsPageState extends State<AllMindsPage> {
   Widget build(BuildContext context) {
     Future<List<Murojaat>> getAllMinds() async {
       final db = FirebaseFirestore.instance;
-      return await db.collection('murojaat').get().then((value) =>
+      return await db.collection('murojaat').orderBy("id",descending: true).get().then((value) =>
           value.docs.map((e) => Murojaat.fromJson(e.data())).toList());
     }
 
     Future refresh() async {
       final db = FirebaseFirestore.instance;
 
-      var x = await db.collection('murojaat').get().then((value) =>
+      var x = await db.collection('murojaat').orderBy("id",descending: true).get().then((value) =>
           value.docs.map((e) => Murojaat.fromJson(e.data())).toList());
       // print(x.isNotEmpty);
       if (x.isNotEmpty) {

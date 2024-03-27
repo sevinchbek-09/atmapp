@@ -1,14 +1,16 @@
 import 'dart:convert';
 import 'package:atmapp/home/all_mind_page.dart';
+import 'package:flutter/gestures.dart';
 import 'package:http/http.dart' as http;
 import 'package:atmapp/model/xodilmar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-
+import 'package:url_launcher/url_launcher.dart' as launcher;
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import '../model/model.dart';
-
 class MurojaatPage extends StatefulWidget {
   String matn;
   String bino;
@@ -131,7 +133,16 @@ class _State extends State<MurojaatPage> {
                                   widget.tel,
                                   style: TextStyle(fontSize: 20),
                                 ),
-                                onPressed: () {}),
+                              onPressed: () async {
+
+                                final url=Uri(scheme: 'tel',path: '+998${widget.tel}');
+                                if (await canLaunchUrl(url)){
+                                  launcher.launchUrl(url);
+                                }
+
+
+
+                              },),
                           ],
                         ),
 
